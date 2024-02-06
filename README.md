@@ -1,6 +1,10 @@
 # CPE-DevOps
 DevOps at CPE Lyon
 
+branches:
+- develop
+- main
+
 > Ennoncés TP : http://school.pages.takima.io/devops-resources/
 
 Name : Alexis Carella
