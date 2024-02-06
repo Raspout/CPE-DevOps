@@ -29,8 +29,6 @@ jobs:
         context: ./tp1-docker/database
         # Note: tags has to be all lower-case
         tags:  ${{secrets.DOCKERHUB_USERNAME}}/my-database:latest
-        # build on feature branches, push only on main branch
-        push: ${{ github.ref == 'refs/heads/main' }}
 
      - name: Build image and push httpd
        uses: docker/build-push-action@v3
@@ -39,8 +37,6 @@ jobs:
         context: ./tp1-docker/httpd
         # Note: tags has to be all lower-case
         tags:  ${{secrets.DOCKERHUB_USERNAME}}/my-httpd:latest
-        # build on feature branches, push only on main branch
-        push: ${{ github.ref == 'refs/heads/main' }}
 
      - name: Build image and push backend
        uses: docker/build-push-action@v3
@@ -49,6 +45,4 @@ jobs:
         context: ./tp1-docker/backend-api
         # Note: tags has to be all lower-case
         tags:  ${{secrets.DOCKERHUB_USERNAME}}/my-backend:latest
-        # build on feature branches, push only on main branch
-        push: ${{ github.ref == 'refs/heads/main' }}
 
