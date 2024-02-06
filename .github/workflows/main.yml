@@ -26,6 +26,6 @@ jobs:
      #finally build your app with the latest command
       - name: Build and test with Maven
         run: |
-          cd tp2-pipelines/simple-api
-          mvn clean verify
+          cd tp2-pipelines/simple-api    # Se placer dans le repértoire du projet
+          mvn clean verify               # Test et compile le projet sans cache
         
