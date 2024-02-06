@@ -1,0 +1,57 @@
+version: '3.8'
+services:
+# Backend API service
+  backend:
+    build:
+      # Specify the backend API Dockerfile location and from where its going to build
+      context: backend-api/.
+    container_name: backend
+    networks:
+      - app-network
+    # Wait for the database to be ready before starting the backend API service
+    depends_on:
+      - database
+    # Set the environment variables
+    environment:
+      - DB_HOST=database
+      - DB_PORT=5432
+      - DB_NAME=database
+      - DB_USERNAME=user
+      - DB_PASSWORD=secret
+# Database service
+  database:
+    build:
+    # Specify the database Dockerfile location and from where its going to build
+      context: database/.
+    container_name: database
+    volumes:
+      - database:/var/lib/postgresql/data
+    networks:
+      - app-network
+    # Set the environment variables
+    environment:
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_USER=user
+      - POSTGRES_DB=database
+# reverse proxy service
+  httpd:
+    build:
+      # Specify the httpd Dockerfile location and from where its going to build
+      context: httpd/.
+    container_name: httpd
+    # Only expose the port 80 to the host machine
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+    # Wait for the backend API to be ready before starting the httpd service
+    depends_on:
+      - backend
+
+# Define the volumes
+volumes:
+  database:
+
+# Define the networks
+networks:
+  app-network:
