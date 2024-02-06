@@ -1,9 +1,10 @@
-name: CI-dev
+name: CI-tests
 on:
   #to begin you want to launch this job in main and develop
   push:
     branches: 
     - develop
+    - main
 
 jobs:
   test-backend: 
