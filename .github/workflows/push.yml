@@ -1,4 +1,4 @@
-name: CI-main
+name: CI-push
 on:
   #to begin you want to launch this job in main and develop
   workflow_run:
