@@ -1,0 +1,9 @@
+---
+# tasks file for roles/front
+- name: Run front
+  docker_container:
+    name: front
+    image: raspout/my-front:latest
+    networks: 
+      - name: app_network
+    state: started

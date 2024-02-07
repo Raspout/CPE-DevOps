@@ -7,9 +7,9 @@
     networks: 
       - name: app_network
     env:
-      DB_HOST: database
-      DB_PORT: "5432"
-      DB_NAME: database
+      DB_HOST: "{{ db_host }}"
+      DB_PORT: "{{ db_port }}"
+      DB_NAME: "{{ db_name }}"
       DB_USERNAME: "{{ db_user }}"
       DB_PASSWORD: "{{ db_password }}"
     state: started

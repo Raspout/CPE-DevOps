@@ -7,7 +7,7 @@
     networks: 
       - name: app_network
     env:
-      POSTGRES_DB: database
+      POSTGRES_DB: "{{ db_name }}"
       POSTGRES_USER: "{{ db_user }}"
       POSTGRES_PASSWORD: "{{ db_password }}"
     state: started

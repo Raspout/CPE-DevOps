@@ -7,6 +7,3 @@
     - database
     - app
     - proxy
-  vars:
-    - db_password: "VerySecret"
-    - db_user: "pg_user"

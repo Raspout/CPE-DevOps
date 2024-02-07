@@ -1,0 +1,62 @@
+name: CI-push
+on:
+  #to begin you want to launch this job in main and develop
+  workflow_run:
+    workflows: ["CI-push"]
+    types:
+      - completed
+    branches: 
+    - main
+
+jobs:
+  # define job to build and publish docker image
+  build-and-push-docker-image:
+   # run only when code is compiling and tests are passing
+    runs-on: ubuntu-22.04
+    # Environment for the variables
+    environment: production
+    # only run job if the previous job was successful
+    if: github.event.workflow_run.conclusion == 'success'   # steps to perform in job
+    # steps to perform in job
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2.5.0
+
+      - name: Login to DockerHub
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      - name: Deploy to server
+        uses: docker/build-push-action@v3
+        with:
+          # relative path to the place where source code with Dockerfile is located
+          context: ./tp1-docker/database
+          # Note: tags has to be all lower-case
+          tags:  ${{secrets.DOCKERHUB_USERNAME}}/my-database:latest
+          push: true
+
+      - name: Build image and push httpd
+        uses: docker/build-push-action@v3
+        with:
+          # relative path to the place where source code with Dockerfile is located
+          context: ./tp1-docker/httpd
+          # Note: tags has to be all lower-case
+          tags:  ${{secrets.DOCKERHUB_USERNAME}}/my-httpd:latest
+          push: true
+
+      - name: Build image and push backend
+        uses: docker/build-push-action@v3
+        with:
+          # relative path to the place where source code with Dockerfile is located
+          context: ./tp1-docker/backend-api
+          # Note: tags has to be all lower-case
+          tags:  ${{secrets.DOCKERHUB_USERNAME}}/my-backend:latest
+          push: true
+
+      - name: Build image and push front
+        uses: docker/build-push-action@v3
+        with:
+          # relative path to the place where source code with Dockerfile is located
+          context: ./tp1-docker/front
+          # Note: tags has to be all lower-case
+          tags:  ${{secrets.DOCKERHUB_USERNAME}}/my-front:latest
+          push: true
