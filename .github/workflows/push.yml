@@ -32,6 +32,7 @@ jobs:
           context: ./tp1-docker/database
           # Note: tags has to be all lower-case
           tags:  ${{secrets.DOCKERHUB_USERNAME}}/my-database:latest
+          push: true
 
       - name: Build image and push httpd
         uses: docker/build-push-action@v3
@@ -40,6 +41,7 @@ jobs:
           context: ./tp1-docker/httpd
           # Note: tags has to be all lower-case
           tags:  ${{secrets.DOCKERHUB_USERNAME}}/my-httpd:latest
+          push: true
 
       - name: Build image and push backend
         uses: docker/build-push-action@v3
@@ -48,6 +50,7 @@ jobs:
           context: ./tp1-docker/backend-api
           # Note: tags has to be all lower-case
           tags:  ${{secrets.DOCKERHUB_USERNAME}}/my-backend:latest
+          push: true
 
       - name: Build image and push front
         uses: docker/build-push-action@v3
@@ -56,3 +59,4 @@ jobs:
           context: ./tp1-docker/front
           # Note: tags has to be all lower-case
           tags:  ${{secrets.DOCKERHUB_USERNAME}}/my-front:latest
+          push: true
