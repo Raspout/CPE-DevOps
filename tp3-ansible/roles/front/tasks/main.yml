@@ -8,3 +8,4 @@
       - name: app_network
     state: started
     restart_policy: always
+    pull: true
