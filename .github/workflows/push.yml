@@ -18,8 +18,7 @@ jobs:
    # only run job if the previous job was successful
    if: github.event.workflow_run.conclusion == 'success'   # steps to perform in job
    # steps to perform in job
-   
-   steps:
+      steps:
     - name: Checkout code
       uses: actions/checkout@v2.5.0
 
