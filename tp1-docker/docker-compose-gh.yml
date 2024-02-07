@@ -41,6 +41,16 @@ services:
     # Wait for the backend API to be ready before starting the httpd service
     depends_on:
       - backend
+# front service
+  front:
+    image: raspout/my-front:1.0
+    container_name: front
+    # Only expose the port 80 to the host machine
+    networks:
+      - app-network
+    # Wait for the backend API to be ready before starting the front service
+    depends_on:
+      - backend
 
 # Define the volumes
 volumes:
