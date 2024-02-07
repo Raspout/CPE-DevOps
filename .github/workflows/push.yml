@@ -56,4 +56,3 @@ jobs:
           context: ./tp1-docker/front
           # Note: tags has to be all lower-case
           tags:  ${{secrets.DOCKERHUB_USERNAME}}/my-front:latest
-```
