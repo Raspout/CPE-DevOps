@@ -1,0 +1,12 @@
+- hosts: alexis.carella.takima.cloud
+  gather_facts: false
+  become: true
+  roles:
+    - docker
+    - network
+    - database
+    - app
+    - proxy
+  vars:
+    - db_password: "VerySecret"
+    - db_user: "pg_user"

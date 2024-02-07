@@ -1,0 +1,34 @@
+---
+# tasks file for roles/docker
+#Install required packages
+  - name: Install device-mapper-persistent-data
+    yum:
+      name: device-mapper-persistent-data
+      state: latest
+
+    # Install latest lvm2 
+  - name: Install lvm2
+    yum:
+      name: lvm2
+      state: latest
+
+    # Make sure that the python packaceg is installed
+  - name: Install python3
+    yum:
+      name: python3
+      state: present
+      
+    # Install the python package for docker
+  - name: Install Docker with Python3
+    pip:
+      name: docker
+      executable: pip3
+    vars:
+      ansible_python_interpreter: /usr/bin/python3
+
+    # Make sure that the docker service is running
+  - name: make sur Docker is running
+    service:
+      name: docker
+      state: started
+    tags: docker
