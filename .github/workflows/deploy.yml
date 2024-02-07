@@ -28,8 +28,8 @@ jobs:
       - name: prepare ssh key
         run: |
             mkdir -p ~/.ssh
-            echo {{ secrets.ssh_priv_key_devops }} > ~/.ssh/ssh_priv_key_devops
-            chmod 600 .ssh/ssh_priv_key_devops
+            echo "${{ secrets.ssh_priv_key_devops }}" > ~/.ssh/ssh_priv_key_devops
+            chmod 600 ~/.ssh/ssh_priv_key_devops
 
       - name: Deploy to server with ansible
         working-directory: ./tp3-ansible
