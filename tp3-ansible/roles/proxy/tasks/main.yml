@@ -1,0 +1,11 @@
+---
+# tasks file for roles/proxy
+- name: Run HTTPD
+  docker_container:
+    name: httpd
+    image: raspout/my-httpd:latest
+    networks: 
+      - name: app_network
+    ports:
+      - "80:80"
+    state: started
