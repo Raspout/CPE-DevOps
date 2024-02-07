@@ -25,14 +25,11 @@ jobs:
       - name: Install ansible
         run: sudo apt-get install ansible
     
-      - name: prepare ssh key
+      - name: Deploy to server with ansible
+        working-directory: ./tp3-ansible
         run: |
             mkdir -p ~/.ssh
             echo "${{secrets.SSH_PRIV_KEY_DEVOPS}}" > ~/.ssh/ssh_priv_key_devops
             chmod 600 ~/.ssh/ssh_priv_key_devops
-
-      - name: Deploy to server with ansible
-        working-directory: ./tp3-ansible
-        run: |
             ansible-playbook -i inventories/setup.yml playbook.yml
     
