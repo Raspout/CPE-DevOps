@@ -26,8 +26,8 @@ jobs:
         run: sudo apt-get install ansible
     
       - name: prepare ssh key
-        working-directory: ${{ github.workspace }}
         run: |
+            cd
             mkdir -p ~/.ssh
             echo {{ secrets.ssh_priv_key_devops }} > .ssh/ssh_priv_key_devops
             chmod 600 .ssh/ssh_priv_key_devops
