@@ -15,5 +15,4 @@ ansible all -i inventories/setup.yml -m yum -a "name=httpd state=absent" --becom
 
 > remarque: --become permet d'éxecuter la tâche en root sur le serveur distant
 
-
-
+Les playbooks et les roles contiennent des commentaires, décrivant les fonctions de chaque paramètre.

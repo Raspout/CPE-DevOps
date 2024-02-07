@@ -1,6 +1,8 @@
 - hosts: alexis.carella.takima.cloud
   gather_facts: false
+  # Become = execute the tasks as root
   become: true
+  # Include the roles
   roles:
     - docker
     - network

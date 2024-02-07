@@ -17,3 +17,5 @@ Les compte-rendus se trouvent sous les répértoires :
   - [push.yaml pipeline](/home/alexis/school/CPE-DevOps/.github/workflows/push.yml)
   - [tests.yml pipeline](/home/alexis/school/CPE-DevOps/.github/workflows/tests.yml)
 - [tp3-ansible](tp3-ansible/README.md)
+  - [playbook.yml](tp3-ansible/playbook.yml)
+  - [inventories](tp3-ansible/setup.yml)

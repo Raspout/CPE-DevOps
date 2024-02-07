@@ -2,14 +2,18 @@
 # tasks file for roles/database
 - name: Run database
   docker_container:
+    # Name of the container, it will also be its hostname for other containers
     name: database
     image: raspout/my-database:latest
+    # Expose the container to the app_network previously created
     networks: 
       - name: app_network
     env:
       POSTGRES_DB: "{{ db_name }}"
       POSTGRES_USER: "{{ db_user }}"
       POSTGRES_PASSWORD: "{{ db_password }}"
+    # Start the container
     state: started
     restart_policy: always
+    # Pull the image again at each run, otherwise the local "latest" image will be used, which may not be the latest
     pull: true

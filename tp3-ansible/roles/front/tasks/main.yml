@@ -2,10 +2,14 @@
 # tasks file for roles/front
 - name: Run front
   docker_container:
+  # Name of the container, it will also be its hostname for other containers
     name: front
     image: raspout/my-front:latest
+    # Expose the container to the app_network previously created
     networks: 
       - name: app_network
+    # Start the container
     state: started
     restart_policy: always
+    # Pull the image again at each run, otherwise the local "latest" image will be used, which may not be the latest
     pull: true
