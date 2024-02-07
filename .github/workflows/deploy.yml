@@ -30,6 +30,6 @@ jobs:
         run: |
             mkdir -p ~/.ssh
             echo "${{secrets.SSH_PRIV_KEY_DEVOPS}}" > ~/.ssh/ssh_priv_key_devops
-            chmod 600 ~/.ssh/ssh_priv_key_devops
+            chmod 400 ~/.ssh/ssh_priv_key_devops
             ansible-playbook -i inventories/setup.yml playbook.yml
     
