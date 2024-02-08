@@ -5,6 +5,13 @@
     yum:
       name: device-mapper-persistent-data
       state: latest
+  - name: add repo docker
+    command: 
+      cmd: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  - name: Install docker
+    yum:
+      name: docker-ce
+      state: present
 
     # Install latest lvm2 
   - name: Install lvm2
@@ -12,13 +19,6 @@
       name: lvm2
       state: latest
 
-    # Make sure that the python packaceg is installed
-  - name: Install python3
-    yum:
-      name: python3
-      state: present
-      
-    # Install the python package for docker
   - name: Install Docker with Python3
     pip:
       name: docker
