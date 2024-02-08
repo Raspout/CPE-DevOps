@@ -2,9 +2,8 @@ version: '3.8'
 services:
 # Backend API service
   backend:
-    build:
-      # Specify the backend API Dockerfile location and from where its going to build
-      context: backend-api/.
+    # Pull the image from the Docker Hub
+    image: raspout/my-backend:latest
     container_name: backend
     networks:
       - app-network
@@ -20,9 +19,8 @@ services:
       - DB_PASSWORD=secret
 # Database service
   database:
-    build:
-    # Specify the database Dockerfile location and from where its going to build
-      context: database/.
+    # Pull the image from the Docker Hub
+    image: raspout/my-database:latest
     container_name: database
     volumes:
       - database:/var/lib/postgresql/data
@@ -35,9 +33,8 @@ services:
       - POSTGRES_DB=database
 # reverse proxy service
   httpd:
-    build:
-      # Specify the httpd Dockerfile location and from where its going to build
-      context: httpd/.
+    # Pull the image from the Docker Hub
+    image: raspout/my-httpd:latest
     container_name: httpd
     # Only expose the port 80 to the host machine
     ports:
@@ -47,11 +44,22 @@ services:
     # Wait for the backend API to be ready before starting the httpd service
     depends_on:
       - backend
+# front service
+  front:
+    # Pull the image from the Docker Hub
+    image: raspout/my-front:latest
+    container_name: front
+    # Only expose the port 80 to the host machine
+    networks:
+      - app-network
+    # Wait for the backend API to be ready before starting the front service
+    depends_on:
+      - backend
 
-# Define the volumes
+# Define the volumes for data persistence
 volumes:
   database:
 
-# Define the networks
+# Create automatically a network
 networks:
   app-network:

@@ -17,16 +17,19 @@ Name : Alexis Carella
 
 # TP1 - Docker
 
-## Database
+## 1.1 - database
 
 ```Dockerfile
 FROM postgres:14.1-alpine
 
-ENV POSTGRES_DB=db \
-   POSTGRES_USER=usr \
-   POSTGRES_PASSWORD=pwd
+#ENV POSTGRES_DB=db \
+#   POSTGRES_USER=usr \
+#   POSTGRES_PASSWORD=pwd
+
+COPY ./scripts /docker-entrypoint-initdb.d
 ```
 
+Commandes pour lancer lancer la base de donnée
 ```bash
 docker build -t tp1-database database
 docker network create app-network
@@ -46,15 +49,16 @@ docker run -d \
 
 ![alt text](.res/image.png)
 
-## Hello World API
 
-Commandes :
+Commandes pour lancer le back-end:
 ```bash
 docker build -t backend-api backend
 docker run -d \
     -p "8081:8080" \
     backend-api
 ```
+
+## 1.2 - Multistage build et étape compilation
 
 L'interêt de faire un multistage build est d'obtenir une image plus légère. Elle ne contient pas toutes les dépendances néscessaire pour compiler le code.
 
@@ -79,8 +83,6 @@ ENTRYPOINT java -jar myapp.jar
 ```
 
 Voici les différentes étapes détaillées de la compilation de l'image docker :
-
-### Etape compilation
 
 ```FROM maven:3.8.6-amazoncorretto-17 AS myapp-build```
 
@@ -107,7 +109,7 @@ myapp. La variable sera initialisé en même temps que le conteneur.
 
 > Lance la compilation du code java grâce à maven sans les tests
 
-### Etape exécution
+Etapes partie exécution, C'est l'étape de compilation de l'image qui va être envoyé au registry:
 
 ```FROM amazoncorretto:17```
 
@@ -131,7 +133,6 @@ myapp. La variable sera initialisé en même temps que le conteneur.
 > Spécifie la commande qui va lancer l'application au lancement du conteneur.
 
 
-## Backend API
 
 Lancer les commandes présentes dans [database](#database) pour lancer la base de donnée, puis lancer les commandes suivantes : 
 ```bash
@@ -143,7 +144,7 @@ docker run -d \
     backend-api
 ```
 
-## Docker-compose
+## 1.3 - Docker-compose commandes
 
 ```bash
 docker-compose up -d # lance les conteneurs
@@ -164,14 +165,41 @@ docker push raspout/my-database:1.0
 On peut maintenant retrouver mes images sur [mon profil dockerhub](https://hub.docker.com/u/raspout) (lien clickable)
 Les images ont chacune une documentation contenant un example de configuration avec docker compose.
 
+## 1.4 - Docker-compose detail
+
+Voici le docker-compose.yml documenté : [docker-compose.yml](docker-compose.yml)
+
 
 # TP2 - Pipelines avec GitHub action
+
+## 2.1 - Testcontainer
 
 Testscontainers est une librairie java qui facilite les tests JUnit en fournissant à l'application des conteneurs jetables.
 Par exemple une base de données instancié seulement pendant les tests afin de tester l'application dans les conditions les plus réels possibles.
 
+## 2.2 - Configuration GitHub actions
+
+Voici la configuration yaml commenté de la pipeline : [test pipeline](.github/workflows/tests.yml)
+
+La pipeline fonctionne !
+
+![alt text](.res/test.png)
+
+## 2.3 - Sonarcloud
+
+sonar.projectKey=Raspout_CPE-DevOps
+sonar.organization=raspout
+file ./pom.xml
+
+```
+mvn -B verify sonar:sonar -Dsonar.projectKey=Raspout_CPE-DevOps -Dsonar.organization=raspout -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}  --file ./pom.xml
+```
+
+![sonar](.res/sonar.png)
 
 # TP3 - Ansible
+
+## 3.1 - Commande Ansible de base
 
 Pour avoir des infos sur la distribution linux du serveur:
 
@@ -193,7 +221,23 @@ Lancer le playbook
 ansible-playbook -i inventories/setup.yml playbook.yml
 ```
 
-Le playbook contient les roles suivants (Ils sont exécuté en root grace à l'option `become: true`) :
+## 3.2 - Description du playbook
+
+Le [playbook](./ansible/old-playbook.yml) contient les tasks suivantes (Ils sont exécuté en root grace à l'option `become: true`) :
+
+  - Installation de lvm2 et device-mapper-persistent-data pour la persistence des données après les
+  - Ajout du repo et installation de docker
+  - Installation Python3
+  - Créé le réseau docker `app-network`
+  - Lance le conteneur `raspout/my-database`
+  - Lance le conteneur `raspout/my-backend`
+  - Lance le conteneur `raspout/my-httpd`
+  - Lance le conteneur `raspout/my-front`
+
+## 3.3 - docker container
+
+
+Le nouveau [playbook](./ansible/playbook.yml) contient les roles suivants (Ils sont exécuté en root grace à l'option `become: true`) :
 
 - docker
   - Installation de lvm2 et device-mapper-persistent-data pour la persistence des données après les

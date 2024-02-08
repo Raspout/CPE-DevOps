@@ -2,7 +2,9 @@ version: '3.8'
 services:
 # Backend API service
   backend:
-    image: raspout/my-backend:1.0
+    build:
+      # Specify the backend API Dockerfile location and from where its going to build
+      context: backend-api/.
     container_name: backend
     networks:
       - app-network
@@ -18,7 +20,9 @@ services:
       - DB_PASSWORD=secret
 # Database service
   database:
-    image: raspout/my-database:1.0
+    build:
+    # Specify the database Dockerfile location and from where its going to build
+      context: database/.
     container_name: database
     volumes:
       - database:/var/lib/postgresql/data
@@ -31,7 +35,9 @@ services:
       - POSTGRES_DB=database
 # reverse proxy service
   httpd:
-    image: raspout/my-httpd:1.0
+    build:
+      # Specify the httpd Dockerfile location and from where its going to build
+      context: httpd/.
     container_name: httpd
     # Only expose the port 80 to the host machine
     ports:
@@ -39,16 +45,6 @@ services:
     networks:
       - app-network
     # Wait for the backend API to be ready before starting the httpd service
-    depends_on:
-      - backend
-# front service
-  front:
-    image: raspout/my-front:1.0
-    container_name: front
-    # Only expose the port 80 to the host machine
-    networks:
-      - app-network
-    # Wait for the backend API to be ready before starting the front service
     depends_on:
       - backend
 
