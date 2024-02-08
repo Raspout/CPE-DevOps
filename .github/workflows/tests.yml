@@ -25,6 +25,6 @@ jobs:
      #finally build your app with the latest command
       - name: Build and test with Maven
         run: |
-          cd tp2-pipelines/simple-api    # Se placer dans le repértoire du projet
+          cd ./backend-api    # Se placer dans le repértoire du projet
           mvn -B verify sonar:sonar -Dsonar.projectKey=Raspout_CPE-DevOps -Dsonar.organization=raspout -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }}  --file ./pom.xml
           # mvn clean verify               # Test et compile le projet sans cache

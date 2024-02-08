@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "*.yaml": "home-assistant"
-    }
+    },
+    "ansible.python.interpreterPath": "/bin/python3.11"
 }
